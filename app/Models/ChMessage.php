@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\PlayFairService;
 use Illuminate\Database\Eloquent\Model;
 use Chatify\Traits\UUID;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -12,11 +13,18 @@ class ChMessage extends Model
 
     public function setBodyAttribute($value)
     {
-        $this->attributes['body'] = encrypt($value);
+        $service = new PlayFairService();
+        $this->attributes['body'] = $service->playfairEncrypt($value, $this->getKey());
     }
 
     public function getBodyAttribute()
     {
-        return decrypt($this->attributes['body']);
+        return (new PlayFairService())
+            ->playfairDecrypt($this->attributes['body'], $this->getKey());
+    }
+
+    public function getKey()
+    {
+        return "chatappencrypt";
     }
 }

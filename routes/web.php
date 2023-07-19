@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Services\PlayFairService;
 use Illuminate\Support\Facades\Route;
 
 /*
